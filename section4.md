@@ -207,7 +207,7 @@
 > (SBDD), depending on the available information for the target of
 > interest.
 >
-> LBDD requires a 2D or 3D ligand structure as input (via.sdf file,
+> LBDD requires a 2D or 3D ligand structure as input (via .sdf file,
 > Simplified Molecular Input Line Entry System (SMILES) string, or
 > sketched directly). A pharmacophore hypothesis can also be manually or
 > automatically added.
@@ -427,9 +427,9 @@ experiment
 > This AI-driven virtual screening methodology enables the rapid
 > analysis and screening of millions of compounds against a target,
 > dramatically speeding up the identification of new inhibitors and
-> potential drug candidates (Gaul, C., & Cuesta-Lopez, S. 2024)
+> potential drug candidates (Gaul, C., & Cuesta-Lopez, S. 2024).
 >
->. Atomwise's technology has already proven instrumental, having
+> Atomwise's technology has already proven instrumental, having
 > successfully identified promising compounds for treating a variety of
 > serious conditions, including Ebola and multiple sclerosis (Gaul, C.,
 > & Cuesta-Lopez, S. 2024)
