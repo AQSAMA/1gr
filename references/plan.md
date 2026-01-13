@@ -1,58 +1,47 @@
-# Plan
+# Plan — Drafting the Thesis Abstract
 
-## Section 3 (Completed ✅)
-- Reduced to 28 curated references in APA7 format
-- Restructured headings and cleaned formatting
+## Objective
+Create a single, Word-conversion-friendly Markdown abstract (`abstraction_head.md`) that accurately reflects the thesis scope in `allv2.md` (AI across the drug discovery and development pipeline), with a crisp academic tone and no stylistic imitation of specific authors.
 
-## Section 4 (Completed ✅)
+## Constraints (Must Follow)
+- Do **not** rewrite, paraphrase, or alter thesis chapter content; the abstract must be a faithful high-level overview.
+- Avoid generic filler (“this paper explores…”) and avoid marketing language.
+- Keep the abstract neither too short nor too long (target: ~180–260 words unless the thesis guidelines require otherwise).
+- Maintain academic tone and terminology consistent with the thesis (AI/ML/DL, target identification, virtual screening, docking, de novo design, ADMET, AlphaFold, ethics/regulation, limitations).
+- Word-conversion compatibility: plain Markdown, no complex formatting, no tables.
 
-### Summary
-- Original: 1420 lines, 82 references
-- Final: 1079 lines, 29 curated references
+## Inputs to Use
+- `1gr/allv2.md` as the source of truth for scope, chapter ordering, and key themes.
+- Use Section 1–2 as stylistic reference (clarity and definitions), and ensure the abstract reflects Sections 3–4 emphasis.
 
-### Changes Applied
+## Drafting Steps (Todo-Style)
+1. Extract the thesis “through-line”:
+   - Traditional discovery constraints (time/cost/attrition; chemical space; translation gaps).
+   - Where AI provides leverage: target ID/validation; screening/design; ADMET; platform case studies.
+   - Boundaries/limitations: data quality, black-box, need for experimental validation, bias/privacy/regulation.
+2. Choose 4–6 core claims to include, each traceable to a chapter:
+   - Chapter 1: motivation + definitions.
+   - Chapter 2: target discovery + omics/networks + AlphaFold.
+   - Chapter 3: screening/docking/generative design + ADMET prediction.
+   - Chapter 4: real-world platforms + constraints + future directions.
+3. Write a first abstract draft (~200–230 words) with this structure:
+   - 1 sentence: problem statement (drug discovery bottlenecks).
+   - 2–3 sentences: what AI enables across the pipeline (targets → candidates → safety).
+   - 1–2 sentences: real-world exemplars (AlphaFold + end-to-end platforms) without overclaiming.
+   - 2 sentences: limitations + need for validation + governance/ethics.
+   - Final sentence: concluding thesis claim (AI as augmentative tool; data- and experiment-coupled workflow).
+4. Polish for:
+   - Precision (no absolute claims; avoid “revolutionizes” unless already supported in text).
+   - Density (each sentence carries information; remove filler).
+   - Consistency in terms and abbreviations.
+5. Save the final abstract into `1gr/abstraction_head.md`.
 
-**1. Reference Curation (82 → 29)**
-- Removed non-academic sources (P360, FierceBiotech, Smithsonian)
-- Removed redundant Insilico papers (kept 5 key ones)
-- Reduced quantum refs to 2 (Arute 2019, McArdle 2020)
-- All references now in APA7 format
+## Definition of Done
+- `abstraction_head.md` exists and contains a clean, single-paragraph abstract (or two short paragraphs if needed for readability).
+- Abstract aligns with `allv2.md` scope and avoids unsupported specifics (no new statistics, no new citations).
+- Tone: clear, restrained, academically credible.
 
-**2. Formatting Fixes**
-- Removed blockquote markers
-- Fixed escaped apostrophes
-- Removed RTL markers
-- Standardized heading hierarchy (# ## ### ####)
-- Cleaned image tags and captions
-- Replaced **Sources** with ## References
-
-### Final Heading Structure
-```
-# CHAPTER 4: REAL-WORLD IMPACT, CHALLENGES, AND FUTURE LANDSCAPE
-## 4.1 Pioneering Platforms and Real-World Case Studies
-### 4.1.1 DeepMind's AlphaFold
-### 4.1.2 End-to-End Generative AI Platforms: Insilico Medicine
-### 4.1.3 Other Notable AI Platforms in the Industry
-## 4.2 Challenges and Limitations
-### 4.2.1 The Black-Box Problem
-### 4.2.2 The Imperative for Experimental Validation
-### 4.2.3 High-Quality Data Scarcity and Its Impact
-## 4.3 Ethical and Regulatory Considerations
-### 4.3.1 Data Privacy and Algorithmic Bias
-### 4.3.2 Regulatory Frameworks
-## 4.4 Future Trends
-### 4.4.1 Emerging Technologies: Quantum Computing
-### 4.4.2 Personalized Medicine
-### 4.4.3 The AI-Scientist Collaboration
-## References (29 entries)
-```
-
-### References Kept (29 total)
-
-**Seminal**: Jumper 2021, Zhavoronkov 2019, Arute 2019, Lin 2023, Vamathevan 2019, Castelvecchi 2016, McKinney 2020
-
-**Platform**: Ren 2023, Pun 2022, Pun 2023, Naumov 2023, Schneider 2018, Wallach 2015, Sellwood 2018, Corso 2022
-
-**Technical**: Bepler 2021, Ferruz 2022, Wu 2022, AlQuraishi 2020, Watson 2019, Miotto 2016, Paul 2021, McArdle 2020, Chen 2018, Wu 2018
-
-**Ethics**: Shaki 2024, Boudi 2024, Hasan 2024, Gilpin 2019
+## Review Notes (to be written after completion)
+- Record final word count.
+- Note any scope decisions (what was intentionally not mentioned to avoid over-specificity).
+- Confirm the abstract does not introduce new facts beyond `allv2.md`.

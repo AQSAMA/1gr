@@ -16,6 +16,14 @@
 - [x] Fix missing spaces after citations (e.g., ")." → "). ")
 - [x] Remove curly brace artifacts
 
+## Abstract (New)
+- [x] Draft thesis abstract based on `allv2.md` scope (AI across the drug discovery pipeline)
+- [x] Ensure tone: academic, clear, non-generic; avoid hype and marketing language
+- [x] Cover: target identification/validation, candidate design/screening, ADMET, real-world platforms/case studies, limits (data quality, black-box), ethics/regulation, and future outlook
+- [x] Keep length moderate (typically ~150–250 words unless thesis guidelines require otherwise)
+- [x] Save as `abstraction_head.md` in the project root (`1gr/abstraction_head.md`)
+- [x] Quick pass: verify terminology consistency (AI/ML/DL, QSAR/QSPR, ADMET) and avoid introducing new claims not supported by the thesis text
+
 ## Review
 **Section 3:**
 - Updated section content in section3.md to reduce clutter and keep the scope academically focused.
@@ -30,6 +38,10 @@
 - Removed 4 orphaned text fragments that were artifacts from the original document
 - Fixed all escaped characters and special notations
 - Added missing spaces after citation parentheses
+- Removed curly brace artifacts
+
+**Abstract:**
+- Added `1gr/abstraction_head.md` containing an academically toned abstract aligned to `allv2.md` (targets → design/screening → ADMET → real-world impact), explicitly noting core limitations (data quality, opacity, dataset shift) and the requirement for prospective experimental validation, with ethics/regulation positioned as deployment-critical.
 
 ## Final Stats
 | Section | Lines | Words |
