@@ -212,6 +212,9 @@ Always preserve the original academic intent
 4. Minor cleanup (symbols, artifacts)
 
 
+5. I will use Git to track changes
+
+
 
 
 ---
