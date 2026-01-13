@@ -31,7 +31,7 @@ Evolutionary Scale Modeling 2 (ESM-2) which, for example, uses 15
 billion parameters to predict protein structures (Lin, Z., et al.
 2023) and ProtGPT2 for transfer learning, as well as leveraging
 unsupervised learning from databases like UniProt. Models like
-OmegaFold (Wu, R., et al. 2022). further enhance this by incorporating
+OmegaFold (Wu, R., et al. 2022) further enhance this by incorporating
 geometric awareness using 3D structural data.
 Despite AlphaFold2\'s groundbreaking success in structure prediction,
 challenges remain, including high computational costs and the
@@ -58,7 +58,7 @@ disease targets:**
 Predicting the three-dimensional structures of potential target
 proteins, solely from their amino acid sequence, is often necessary
 for drug discovery. AI systems had a major recent success in this,
-with AlphaFold2 (Jumper et al., 2021).winning the Critical Assessment
+with AlphaFold2 (Jumper et al., 2021) winning the Critical Assessment
 of Structure Prediction (CASP14) (Moult et al., 2014). This structural
 biology advance is projected to fundamentally transform personalized
 medicine and drug discovery. AlphaFold represents a pivotal leap
@@ -87,7 +87,7 @@ al., 2023), ( Zhu et al., 2023).
 **The PandaOmics platform** leverages these and other rapid
 developments in computer-aided drug discovery, specifically
 incorporating large language models and robotics to accelerate the
-process (Schneider, G. 2018), (Urban et al., 2023)..**The PandaOmics
+process (Schneider, G. 2018), (Urban et al., 2023). **The PandaOmics
 platform** is a sophisticated, AI-driven engine designed for
 Therapeutic Target Identification. Its core feature is a user-friendly
 meta-analysis dashboard that produces a highly refined, ranked list of
