@@ -1,405 +1,136 @@
-**2. AI for Target Identification and Validation**
-
-**By Abdul-Mumin Essam Mahmoud**
-
-**05/11/2025**
-
-**Abbreviations**
-
-AI, artificial intelligence; ML, machine learning; DL, deep learning;
-GNN, graph neural network; DTI, drug--target interaction; QSAR,
-quantitative structure--activity relationship; MD, molecular dynamics;
-MM‑GBSA, Molecular Mechanics/Generalized Born Surface Area; PPI,
-protein--protein interaction; GWAS, genome‑wide association study; eQTL,
-expression quantitative trait locus; scRNA‑seq, single‑cell RNA
-sequencing; ST, spatial transcriptomics; PCM, proteochemometrics; PAE,
-predicted aligned error; pLDDT, predicted local distance difference
-test; ADMET, absorption, distribution, metabolism, excretion, and
-toxicity.
-
-**2.1. Biomarker Discovery and Target Identification**
-
-Modern target identification starts from a causal hypothesis about
-disease biology and proceeds through multi‑omic evidence aggregation,
-model‑based prioritization, and prospective validation. The key question
-is not only whether a protein is associated with disease, but whether
-modulating it will produce the desired clinical effect without
-unacceptable toxicity. AI systems operationalize this by quantifying
-genetic and molecular support, integrating prior pharmacology, and
-learning structure in large, heterogeneous datasets (Vamathevan et al.,
-2019; Chen et al., 2018). Early systems‑level work demonstrated that
-machine learning can distinguish morbid and druggable human genes by
-combining network topology, pathway membership, expression specificity,
-and subcellular localization (Costa et al., 2010). Recent pipelines
-extend this approach with representation learning over protein--protein
-interaction (PPI) graphs, tissue‑resolved transcriptomics, and human
-genetics, producing target scores that correlate with downstream success
-(Gaudelet et al., 2021; David et al., 2020).
-
-Genetic evidence is the highest‑value signal for causality. Genome‑wide
-association studies (GWAS) map disease‑associated loci, but most hits
-are noncoding. AI models trained on DNA sequence learn regulatory
-grammar to predict variant effects on transcription factor binding and
-chromatin, enabling fine‑mapping and colocalization with gene expression
-(Alipanahi et al., 2015; Angermueller et al., 2016). Network propagation
-then diffuses locus‑level signals across PPI graphs to prioritize
-proximal proteins with convergent evidence (Gaudelet et al., 2021). The
-resulting candidates are ranked using calibrated classifiers with
-positives from known targets and carefully constructed negatives to
-avoid label leakage from literature bias (Vamathevan et al., 2019).
-
-High‑content phenotypic screens produce images or transcriptomic
-signatures that capture pathway states. Convolutional neural networks
-and graph‑based encoders learn features predictive of target
-perturbation, including morphological embeddings that cluster compounds
-by mechanism of action. These features can be aligned with CRISPR
-knockout profiles to infer the proteins responsible for observed
-phenotypes, creating a mapping from phenotype to target space that
-complements genetics (Chen et al., 2018; Stokes et al., 2020).
-
-**2.1.1. Using ML/DL to identify novel disease‑associated proteins and
-genes.**
-
-A practical supervised workflow comprises: (i) assembling positives from
-approved or clinical‑phase targets for the indication, deduplicated by
-gene and mechanism; (ii) constructing a candidate set from
-protein‑coding genes filtered by expression in disease tissue; (iii)
-extracting features, including network centrality, shortest‑path
-distance to disease modules, intolerance to loss‑of‑function, tissue
-specificity, ligandability proxies, and genetic burden; (iv) training
-gradient‑boosted trees or deep models with stratified cross‑validation;
-and (v) estimating calibrated probabilities and uncertainty via
-bootstrapping or deep ensembles (Vamathevan et al., 2019; Gaudelet et
-al., 2021). For diseases with known pathway architecture, graph neural
-networks (GNNs) aggregate neighborhood information and edge types to
-increase recall of pathway‑coherent targets (Scarselli et al., 2008;
-Defferrard et al., 2016; Veličković et al., 2018).
-
-Interpretability constrains adoption. SHAP values for boosted trees and
-attention weights for GNNs help decompose predictions into evidence
-items, e.g., GWAS colocalization, network proximity to a known effector,
-or tissue‑specific expression. This evidence table can be reviewed
-alongside orthogonal literature and safety flags before advancing a
-target to experimental validation (Yu, Beam, & Kohane, 2018; David et
-al., 2020).
-
-**2.2. Analysis of Omics Data**
-
-**2.2.1. Applying AI to genomics, proteomics, and transcriptomics to
-understand disease pathways.**
-
-Genomics. Sequence‑based deep learning models learn position‑specific
-motifs and long‑range interactions from raw DNA. They predict chromatin
-accessibility and transcription factor binding, enabling prioritization
-of noncoding variants that perturb regulatory programs. Downstream,
-statistical colocalization integrates eQTLs with GWAS to link variants
-to gene expression changes in relevant tissues. Combining these signals
-with PPI graphs produces disease modules whose enriched processes
-suggest intervention points (Alipanahi et al., 2015; Angermueller et
-al., 2016; Gaudelet et al., 2021).
-
-Transcriptomics. Bulk RNA‑seq provides differential expression, but
-single‑cell RNA‑seq (scRNA‑seq) resolves cell‑type‑specific drivers.
-Representation learning aligns patient and control cells in a shared
-latent space to isolate disease‑specific programs. Graph clustering over
-cell--cell similarity identifies perturbed subpopulations, while
-gene‑set activity scores track pathway shifts that point to actionable
-nodes. Integration with perturbational atlases allows matching disease
-signatures to CRISPR perturbations, proposing targets whose knockdown
-reverts the signature (Angermueller et al., 2016; Chen et al., 2018).
-
-Proteomics. Data‑independent acquisition mass spectrometry quantifies
-proteins and post‑translational modifications at scale. ML corrects
-batch effects, imputes missing values, and models kinase--substrate
-relationships from phosphoproteomic time courses. Joint models that fuse
-protein abundance, phospho‑signaling, and interactome edges yield
-pathway‑level activity scores, improving the precision of target
-nomination compared with any single modality (David et al., 2020;
-Gaudelet et al., 2021).
-
-Multi‑omic fusion. Two strategies dominate. Early fusion concatenates
-features followed by regularized learners with sparsity to select
-predictive modalities. Late fusion learns modality‑specific encoders and
-combines their embeddings with attention or co‑training, maintaining
-robustness to missing assays. Contrastive objectives align modalities
-and improve generalization to new cohorts (Wang, Wang, & Farimani, 2022;
-David et al., 2020). Pragmatically, cross‑study validation and
-leave‑tissue‑out tests are critical to avoid optimistic bias (Vamathevan
-et al., 2019).
-
-**2.2.2. The Impact of AlphaFold on structural biology.**
-
-AlphaFold2 transformed structural biology by predicting protein
-backbones and side‑chain placements with near‑experimental accuracy
-across much of the proteome (Jumper et al., 2021). The AlphaFold Protein
-Structure Database now hosts predicted structures for over 200 million
-proteins, vastly increasing structural coverage, accelerating annotation
-of domains and interfaces, and enabling structure‑guided target triage
-where crystallography is absent (sources.pdf summary; Kryshtafovych &
-Fidelis, 2009). Model‑derived confidence metrics matter operationally:
-pLDDT distinguishes confidently modeled regions from disordered
-segments, while the predicted aligned error (PAE) matrix flags domain
-orientations with limited reliability. These diagnostics guide use in
-docking, epitope mapping, and variant interpretation.
-
-For target validation, AlphaFold2 shortens cycles by enabling pocket
-detection, interface mapping, and mutational scanning in silico. When
-bound complexes are required, docking against AlphaFold models can be
-coupled to physics‑based refinement or short molecular dynamics (MD)
-simulations to relax clashes, followed by MM‑GBSA rescoring to
-prioritize plausible poses (Li, Chen, & Weng, 2003; Ganesan, Coote, &
-Barakat, 2017; Wang, Ribeiro, & Tiwary, 2020; Xu et al., 2013).
-Geometric descriptors of cavities derived from alpha‑shape and Delaunay
-triangulation correlate with ligandability and inform binding‑site
-classification (Liang et al., 1998; Zhou & Yan, 2014).
-
-Limitations remain: transient conformations, induced fit, membrane
-contexts, and multi‑component assemblies can deviate from predicted
-monomeric structures. Complex prediction quality depends on
-coevolutionary signal and training distribution. Therefore, structural
-predictions should be treated as hypotheses and paired with orthogonal
-evidence, such as chemical proteomics, thermal‑shift stabilization of
-target engagement, or CRISPR allelic series that test directionality of
-effect (Vamathevan et al., 2019; Kryshtafovych & Fidelis, 2009).
-
-**2.3. Network Pharmacology**
-
-**2.3.1. Using graph‑based AI models to map biological networks.**
-
-Network pharmacology represents diseases, proteins, compounds, and
-phenotypes as a heterogeneous graph. Learning on this graph captures
-systems‑level behavior such as pathway redundancy and polypharmacology.
-Classical label‑propagation methods spread annotations along
-high‑confidence edges, while modern graph neural networks (GNNs) learn
-task‑specific message passing to combine node features with topology
-(Scarselli et al., 2008; Defferrard et al., 2016; Veličković et al.,
-2018). Deep architectures with residual connections and normalization
-enable very deep GCNs, improving long‑range dependency capture (Li et
-al., 2019). In drug discovery, these models fuse chemical graphs of
-small molecules with protein sequence or structure embeddings to predict
-activities and safety liabilities (David et al., 2020; Gaudelet et al.,
-2021).
-
-Representation choice is central. For molecules, message‑passing neural
-networks operate on atom--bond graphs; for proteins, options include
-convolution over contact maps, language‑model embeddings from sequences,
-and graph encodings of residue--residue proximity. MoleculeNet
-standardized benchmarks revealed that graph models outperform descriptor
-baselines on many biochemical endpoints when datasets are sufficiently
-large and splits are chemically meaningful (Wu et al., 2018; David et
-al., 2020). For targets, integrating disease‑specific network context
-with intrinsic properties such as essentiality and tissue specificity
-improves precision of target nomination compared with naive degree‑based
-heuristics (Vamathevan et al., 2019; Gaudelet et al., 2021).
-
-**2.3.2. Predicting complex target--drug interactions.**
-
-Drug--target interaction (DTI) prediction spans binary interaction
-classification, affinity regression, and pocket‑conditioned pose
-scoring. Kernel methods pioneered integrated chemical, genomic, and
-pharmacological kernels with matrix factorization to impute missing
-interactions (Yamanishi et al., 2010; Gönen, 2012). Deep models now
-learn end‑to‑end from sequences and SMILES or graphs. DeepAffinity
-unified recurrent and convolutional encoders to predict continuous
-binding affinity with interpretable attention maps (Karimi et al.,
-2019). Structure‑based models such as AtomNet used 3D convolutional
-networks on protein--ligand grids to score poses, while multi‑task DNNs
-improved QSAR accuracy across assays (Wallach, Dzamba, & Heifets, 2015;
-Ma et al., 2015).
-
-Evaluation must reflect deployment. Temporal splits or scaffold splits
-reduce overestimation from analogue bias, while prospective validation
-on wet‑lab assays or new chemotypes is the gold standard (Wu et al.,
-2018; David et al., 2020). For affinity regression, report Pearson r
-with confidence intervals; for classification, use PR‑AUC in addition to
-ROC‑AUC under class imbalance. Calibration curves and expected
-calibration error quantify probability quality and are essential when
-models prioritize experiments. Uncertainty can be estimated with deep
-ensembles or Monte Carlo dropout, informing risk‑aware batch selection
-(Vamathevan et al., 2019).
-
-Caveats include dataset shift across assay formats, label noise from
-heterogeneous thresholds, and shortcut learning on protein or ligand
-identifiers. Mitigations include multi‑task learning across related
-assays, explicit assay embeddings, and controlled train--test splits
-that hide trivial shortcuts (David et al., 2020; Wu et al., 2018). In
-production, active learning couples DTI models with Bayesian
-optimization to choose diverse, uncertain compounds that maximize
-information gain while respecting medicinal chemistry constraints (Chen
-et al., 2018).
-
-**2.4. Predicting Target "Druggability"**
-
-**2.4.1. Assessing how likely a biological target is to bind effectively
-with a drug molecule.**
-
-Druggability models estimate whether modulating a target with a small
-molecule or biologic is feasible at acceptable selectivity and exposure.
-For enzymes and receptors, pocket geometry, hydrophobic enclosure, and
-the presence of aromatic or hydrogen‑bonding hotspots correlate with
-ligandability. Alpha‑shape analyses and Delaunay triangulation compute
-pocket volumes, mouth widths, and curvature, while residue‑level
-descriptors capture side‑chain flexibility and physicochemical
-complementarity (Liang et al., 1998; Zhou & Yan, 2014).
-
-Physics‑based components add mechanistic grounding. Docking provides
-approximate poses and scores that can be refined via short MD
-simulations to relax side chains, followed by MM‑GBSA or related
-end‑point free‑energy estimators to rescore top poses (Li, Chen, & Weng,
-2003; Ganesan, Coote, & Barakat, 2017; Xu et al., 2013). When
-experimental structures are unavailable, AlphaFold2 models with high
-pLDDT in binding regions are usable starting points, with caution about
-loop placement and induced fit (Jumper et al., 2021; Kryshtafovych &
-Fidelis, 2009).
-
-Proteochemometric (PCM) modeling complements structure by jointly
-encoding the ligand and a panel of related targets to learn family‑level
-binding rules. This multi‑task formulation improves extrapolation to
-understudied homologs and highlights selectivity determinants, which is
-critical for predicting off‑target risks early (Qiu et al., 2017; David
-et al., 2020).
-
-Empirical priors inform risk. Historical success is enriched among
-targets with human genetic support, secreted or extracellular proteins
-for biologics, and tractable enzyme classes. Conversely, ubiquitously
-expressed essential genes and proteins central to housekeeping complexes
-carry toxicity risk. AI systems incorporate such priors as features or
-Bayesian priors to calibrate expectations and to steer portfolios toward
-tractable biology (Vamathevan et al., 2019; Chen et al., 2018).
-
-Validation closes the loop. Biochemical assays confirm potency and
-mechanism. Biophysical assays---thermal shift, SPR, CETSA---confirm
-target engagement in relevant matrices. Cellular assays test pathway
-reversal and on‑target engagement. Genomic perturbations, including
-CRISPR knockouts or allelic series, test causality and direction of
-effect. Iterating predictions with experimental feedback turns
-druggability assessment from a static filter into a learning system
-(Vamathevan et al., 2019; David et al., 2020).
-
-Quality and Reproducibility Considerations. Across subsections, the most
-common failure modes are data leakage, analogue bias, and
-non‑representative splits. Adopt scaffold or temporal splits, document
-all preprocessing, and version datasets. Prefer external validation on
-independent cohorts or assays when feasible. Report hyperparameters,
-uncertainty estimates, and confidence intervals. Maintain traceable
-evidence for every promoted target so decisions remain auditable to
-clinicians and regulators (Yu, Beam, & Kohane, 2018; Vamathevan et al.,
-2019; Pandey et al., 2022).
-
-**References**
-
-Alipanahi, B., Delong, A., Weirauch, M. T., & Frey, B. J. (2015).
-Predicting the sequence specificities of DNA‑ and RNA‑binding proteins
-by deep learning. Nature Biotechnology, 33(8), 831--838.
-
-Angermueller, C., Pärnamaa, T., Parts, L., & Stegle, O. (2016). Deep
-learning for computational biology. Molecular Systems Biology, 12(7),
-878.
-
-Atz, K., Grisoni, F., & Schneider, G. (2021). Geometric deep learning on
-molecular representations. Nature Machine Intelligence, 3(12),
-1023--1032.
-
-Chen, H., Engkvist, O., Wang, Y., Olivecrona, M., & Blaschke, T. (2018).
-The rise of deep learning in drug discovery. Drug Discovery Today,
-23(6), 1241--1250.
-
-Costa, P. R., Acencio, M. L., & Lemke, N. (2010). A machine learning
-approach for genome‑wide prediction of morbid and druggable human genes
-based on systems‑level data. BMC Genomics, 11, 1--15.
-
-David, L., Thakkar, A., Mercado, R., & Engkvist, O. (2020). Molecular
-representations in AI‑driven drug discovery: A review and practical
-guide. Journal of Cheminformatics, 12(1), 1--22.
-
-Defferrard, M., Bresson, X., & Vandergheynst, P. (2016). Convolutional
-neural networks on graphs with fast localized spectral filtering. In
-Advances in Neural Information Processing Systems.
-
-Ganesan, A., Coote, M. L., & Barakat, K. (2017). Molecular
-dynamics‑driven drug discovery: Leaping forward with confidence. Drug
-Discovery Today, 22(2), 249--269.
-
-Gaudelet, T., Day, B., Jamasb, A. R., Soman, J., Regep, C., Liu, G.,
-\... & Tang, J. (2021). Utilizing graph machine learning within drug
-discovery and development. Briefings in Bioinformatics, 22(6), bbab159.
-
-Gönen, M. (2012). Predicting drug--target interactions from chemical and
-genomic kernels using Bayesian matrix factorization. Bioinformatics,
-28(18), 2304--2310.
-
-Jiang, D., Wu, Z., Hsieh, C.‑Y., Chen, G., Liao, B., Wang, Z., \... &
-Hou, T. (2021). Could graph neural networks learn better molecular
-representation for drug discovery? Journal of Cheminformatics, 13(1),
-1--23.
-
-Jumper, J., Evans, R., Pritzel, A., et al. (2021). Highly accurate
-protein structure prediction with AlphaFold. Nature, 596, 583--589.
-
-Karimi, M., Wu, D., Wang, Z., & Shen, Y. (2019). DeepAffinity:
-Interpretable deep learning of compound--protein affinity.
-Bioinformatics, 35(18), 3329--3338.
-
-Kryshtafovych, A., & Fidelis, K. (2009). Protein structure prediction
-and model quality assessment. Drug Discovery Today, 14(7--8), 386--393.
-
-Li, L., Chen, R., & Weng, Z. (2003). RDOCK: Refinement of rigid‑body
-protein docking predictions. Proteins, 53(3), 693--707.
-
-Liang, J., Edelsbrunner, H., Fu, P., Sudhakar, P. V., & Subramaniam, S.
-(1998). Analytical shape computation of macromolecules: I. Proteins,
-33(1), 1--17.
-
-Ma, J., Sheridan, R. P., Liaw, A., et al. (2015). Deep neural nets as a
-method for QSAR. Journal of Chemical Information and Modeling, 55(2),
-263--274.
-
-Pandey, M., Fernandez, M., Gentile, F., Isayev, O., Tropsha, A., Stern,
-A. C., & Cherkasov, A. (2022). The transformational role of GPU
-computing and deep learning in drug discovery. Nature Machine
-Intelligence, 4(3), 211--221.
-
-Qiu, T., Qiu, J., Feng, J., et al. (2017). Recent progress in
-proteochemometric modelling. Briefings in Bioinformatics, 18(1),
-125--136.
-
-Scarselli, F., Gori, M., Tsoi, A. C., Hagenbuchner, M., & Monfardini, G.
-(2008). The graph neural network model. IEEE Transactions on Neural
-Networks, 20(1), 61--80.
-
-Stokes, J. M., Yang, K., Swanson, K., et al. (2020). A deep learning
-approach to antibiotic discovery. Cell, 180(4), 688--702.
-
-Vamathevan, J., Clark, D., Czodrowski, P., Dunham, I., Ferran, E., Lee,
-G., \... & Bender, A. (2019). Applications of machine learning in drug
-discovery and development. Nature Reviews Drug Discovery, 18(6),
-463--477.
-
-Veličković, P., Cucurull, G., Casanova, A., Romero, A., Liò, P., &
-Bengio, Y. (2018). Graph attention networks. arXiv:1710.10903.
-
-Wallach, I., Dzamba, M., & Heifets, A. (2015). AtomNet: A deep CNN for
-structure‑based drug discovery. arXiv:1510.02855.
-
-Wang, Y., Ribeiro, J. M. L., & Tiwary, P. (2020). Machine learning
-approaches for analyzing and enhancing MD. Current Opinion in Structural
-Biology, 61, 139--145.
-
-Wang, Y., Wang, J., Cao, Z., & Barati Farimani, A. (2022). Molecular
-contrastive learning via GNNs. Nature Machine Intelligence, 4, 279--287.
-
-Wu, Z., Ramsundar, B., Feinberg, E. N., et al. (2018). MoleculeNet: A
-benchmark for molecular ML. Chemical Science, 9(2), 513--530.
-
-Xu, L., Sun, H., Li, Y., Wang, J., & Hou, T. (2013). Assessing MM/PBSA
-and MM/GBSA. Journal of Physical Chemistry B, 117(28), 8408--8421.
-
-Yamanishi, Y., Kotera, M., Kanehisa, M., & Goto, S. (2010). DTI
-prediction from chemical, genomic and pharmacological data.
-Bioinformatics, 26(18), 246--254.
-
-Yu, K.‑H., Beam, A. L., & Kohane, I. S. (2018). Artificial intelligence
-in healthcare. Nature Biomedical Engineering, 2(10), 719--731.
-
-Zhou, W., & Yan, H. (2014). Alpha shape and Delaunay triangulation in
-protein interactions. Briefings in Bioinformatics, 15(1), 54--64.
+## 2. AI for Target Identification and Validation
+
+### Abbreviations
+AI, artificial intelligence; ML, machine learning; DL, deep learning; GNN, graph neural network; DTI, drug–target interaction; QSAR, quantitative structure–activity relationship; MD, molecular dynamics; MM-GBSA, Molecular Mechanics/Generalized Born Surface Area; PPI, protein–protein interaction; GWAS, genome-wide association study; eQTL, expression quantitative trait locus; scRNA-seq, single-cell RNA sequencing; ST, spatial transcriptomics; PCM, proteochemometrics; PAE, predicted aligned error; pLDDT, predicted local distance difference test; ADMET, absorption, distribution, metabolism, excretion, and toxicity.
+
+### 2.1. Biomarker Discovery and Target Identification
+
+Modern target identification starts from a causal hypothesis about disease biology and proceeds through multi-omic evidence aggregation, model-based prioritization, and prospective validation. The key question is not only whether a protein is associated with disease, but whether modulating it will produce the desired clinical effect without unacceptable toxicity. AI systems operationalize this by quantifying genetic and molecular support, integrating prior pharmacology, and learning structure in large, heterogeneous datasets (Vamathevan et al., 2019; Chen et al., 2018). Early systems-level work demonstrated that machine learning can distinguish morbid and druggable human genes by combining network topology, pathway membership, expression specificity, and subcellular localization (Costa et al., 2010). Recent pipelines extend this approach with representation learning over protein–protein interaction (PPI) graphs, tissue-resolved transcriptomics, and human genetics, producing target scores that correlate with downstream success (Gaudelet et al., 2021; David et al., 2020).
+
+Genetic evidence is the highest-value signal for causality. Genome-wide association studies (GWAS) map disease-associated loci, but most hits are noncoding. AI models trained on DNA sequence learn regulatory grammar to predict variant effects on transcription factor binding and chromatin, enabling fine-mapping and colocalization with gene expression (Alipanahi et al., 2015; Angermueller et al., 2016). Network propagation then diffuses locus-level signals across PPI graphs to prioritize proximal proteins with convergent evidence (Gaudelet et al., 2021). The resulting candidates are ranked using calibrated classifiers with positives from known targets and carefully constructed negatives to avoid label leakage from literature bias (Vamathevan et al., 2019).
+
+High-content phenotypic screens produce images or transcriptomic signatures that capture pathway states. Convolutional neural networks and graph-based encoders learn features predictive of target perturbation, including morphological embeddings that cluster compounds by mechanism of action. These features can be aligned with CRISPR knockout profiles to infer the proteins responsible for observed phenotypes, creating a mapping from phenotype to target space that complements genetics (Chen et al., 2018; Stokes et al., 2020).
+
+#### 2.1.1. Using ML/DL to identify novel disease-associated proteins and genes
+
+A practical supervised workflow comprises: (i) assembling positives from approved or clinical-phase targets for the indication, deduplicated by gene and mechanism; (ii) constructing a candidate set from protein-coding genes filtered by expression in disease tissue; (iii) extracting features, including network centrality, shortest-path distance to disease modules, intolerance to loss-of-function, tissue specificity, ligandability proxies, and genetic burden; (iv) training gradient-boosted trees or deep models with stratified cross-validation; and (v) estimating calibrated probabilities and uncertainty via bootstrapping or deep ensembles (Vamathevan et al., 2019; Gaudelet et al., 2021). For diseases with known pathway architecture, graph neural networks (GNNs) aggregate neighborhood information and edge types to increase recall of pathway-coherent targets (Scarselli et al., 2008; Defferrard et al., 2016; Veličković et al., 2018).
+
+Interpretability constrains adoption. SHAP values for boosted trees and attention weights for GNNs help decompose predictions into evidence items, e.g., GWAS colocalization, network proximity to a known effector, or tissue-specific expression. This evidence table can be reviewed alongside orthogonal literature and safety flags before advancing a target to experimental validation (Yu, Beam, & Kohane, 2018; David et al., 2020).
+
+### 2.2. Analysis of Omics Data
+
+#### 2.2.1. Applying AI to genomics, proteomics, and transcriptomics to understand disease pathways
+
+Genomics. Sequence-based deep learning models learn position-specific motifs and long-range interactions from raw DNA. They predict chromatin accessibility and transcription factor binding, enabling prioritization of noncoding variants that perturb regulatory programs. Downstream, statistical colocalization integrates eQTLs with GWAS to link variants to gene expression changes in relevant tissues. Combining these signals with PPI graphs produces disease modules whose enriched processes suggest intervention points (Alipanahi et al., 2015; Angermueller et al., 2016; Gaudelet et al., 2021).
+
+Transcriptomics. Bulk RNA-seq provides differential expression, but single-cell RNA-seq (scRNA-seq) resolves cell-type-specific drivers. Representation learning aligns patient and control cells in a shared latent space to isolate disease-specific programs. Graph clustering over cell–cell similarity identifies perturbed subpopulations, while gene-set activity scores track pathway shifts that point to actionable nodes. Integration with perturbational atlases allows matching disease signatures to CRISPR perturbations, proposing targets whose knockdown reverts the signature (Angermueller et al., 2016; Chen et al., 2018).
+
+Proteomics. Data-independent acquisition mass spectrometry quantifies proteins and post-translational modifications at scale. ML corrects batch effects, imputes missing values, and models kinase–substrate relationships from phosphoproteomic time courses. Joint models that fuse protein abundance, phospho-signaling, and interactome edges yield pathway-level activity scores, improving the precision of target nomination compared with any single modality (David et al., 2020; Gaudelet et al., 2021).
+
+Multi-omic fusion. Two strategies dominate. Early fusion concatenates features followed by regularized learners with sparsity to select predictive modalities. Late fusion learns modality-specific encoders and combines their embeddings with attention or co-training, maintaining robustness to missing assays. Contrastive objectives align modalities and improve generalization to new cohorts (Wang, Wang, & Farimani, 2022; David et al., 2020). Pragmatically, cross-study validation and leave-tissue-out tests are critical to avoid optimistic bias (Vamathevan et al., 2019).
+
+#### 2.2.2. The Impact of AlphaFold on structural biology
+
+AlphaFold2 transformed structural biology by predicting protein backbones and side-chain placements with near-experimental accuracy across much of the proteome (Jumper et al., 2021). The AlphaFold Protein Structure Database now hosts predicted structures for over 200 million proteins, vastly increasing structural coverage, accelerating annotation of domains and interfaces, and enabling structure-guided target triage where crystallography is absent (sources.pdf summary; Kryshtafovych & Fidelis, 2009). Model-derived confidence metrics matter operationally: pLDDT distinguishes confidently modeled regions from disordered segments, while the predicted aligned error (PAE) matrix flags domain orientations with limited reliability. These diagnostics guide use in docking, epitope mapping, and variant interpretation.
+
+For target validation, AlphaFold2 shortens cycles by enabling pocket detection, interface mapping, and mutational scanning in silico. When bound complexes are required, docking against AlphaFold models can be coupled to physics-based refinement or short molecular dynamics (MD) simulations to relax clashes, followed by MM-GBSA rescoring to prioritize plausible poses (Li, Chen, & Weng, 2003; Ganesan, Coote, & Barakat, 2017; Wang, Ribeiro, & Tiwary, 2020; Xu et al., 2013). Geometric descriptors of cavities derived from alpha-shape and Delaunay triangulation correlate with ligandability and inform binding-site classification (Liang et al., 1998; Zhou & Yan, 2014).
+
+Limitations remain: transient conformations, induced fit, membrane contexts, and multi-component assemblies can deviate from predicted monomeric structures. Complex prediction quality depends on coevolutionary signal and training distribution. Therefore, structural predictions should be treated as hypotheses and paired with orthogonal evidence, such as chemical proteomics, thermal-shift stabilization of target engagement, or CRISPR allelic series that test directionality of effect (Vamathevan et al., 2019; Kryshtafovych & Fidelis, 2009).
+
+### 2.3. Network Pharmacology
+
+#### 2.3.1. Using graph-based AI models to map biological networks
+
+Network pharmacology represents diseases, proteins, compounds, and phenotypes as a heterogeneous graph. Learning on this graph captures systems-level behavior such as pathway redundancy and polypharmacology. Classical label-propagation methods spread annotations along high-confidence edges, while modern graph neural networks (GNNs) learn task-specific message passing to combine node features with topology (Scarselli et al., 2008; Defferrard et al., 2016; Veličković et al., 2018). Deep architectures with residual connections and normalization enable very deep GCNs, improving long-range dependency capture (Li et al., 2019). In drug discovery, these models fuse chemical graphs of small molecules with protein sequence or structure embeddings to predict activities and safety liabilities (David et al., 2020; Gaudelet et al., 2021).
+
+Representation choice is central. For molecules, message-passing neural networks operate on atom–bond graphs; for proteins, options include convolution over contact maps, language-model embeddings from sequences, and graph encodings of residue–residue proximity. MoleculeNet standardized benchmarks revealed that graph models outperform descriptor baselines on many biochemical endpoints when datasets are sufficiently large and splits are chemically meaningful (Wu et al., 2018; David et al., 2020). For targets, integrating disease-specific network context with intrinsic properties such as essentiality and tissue specificity improves precision of target nomination compared with naive degree-based heuristics (Vamathevan et al., 2019; Gaudelet et al., 2021).
+
+#### 2.3.2. Predicting complex target–drug interactions
+
+Drug–target interaction (DTI) prediction spans binary interaction classification, affinity regression, and pocket-conditioned pose scoring. Kernel methods pioneered integrated chemical, genomic, and pharmacological kernels with matrix factorization to impute missing interactions (Yamanishi et al., 2010; Gönen, 2012). Deep models now learn end-to-end from sequences and SMILES or graphs. DeepAffinity unified recurrent and convolutional encoders to predict continuous binding affinity with interpretable attention maps (Karimi et al., 2019). Structure-based models such as AtomNet used 3D convolutional networks on protein–ligand grids to score poses, while multi-task DNNs improved QSAR accuracy across assays (Wallach, Dzamba, & Heifets, 2015; Ma et al., 2015).
+
+Evaluation must reflect deployment. Temporal splits or scaffold splits reduce overestimation from analogue bias, while prospective validation on wet-lab assays or new chemotypes is the gold standard (Wu et al., 2018; David et al., 2020). For affinity regression, report Pearson r with confidence intervals; for classification, use PR-AUC in addition to ROC-AUC under class imbalance. Calibration curves and expected calibration error quantify probability quality and are essential when models prioritize experiments. Uncertainty can be estimated with deep ensembles or Monte Carlo dropout, informing risk-aware batch selection (Vamathevan et al., 2019).
+
+Caveats include dataset shift across assay formats, label noise from heterogeneous thresholds, and shortcut learning on protein or ligand identifiers. Mitigations include multi-task learning across related assays, explicit assay embeddings, and controlled train–test splits that hide trivial shortcuts (David et al., 2020; Wu et al., 2018). In production, active learning couples DTI models with Bayesian optimization to choose diverse, uncertain compounds that maximize information gain while respecting medicinal chemistry constraints (Chen et al., 2018).
+
+### 2.4. Predicting Target "Druggability"
+
+#### 2.4.1. Assessing how likely a biological target is to bind effectively with a drug molecule
+
+Druggability models estimate whether modulating a target with a small molecule or biologic is feasible at acceptable selectivity and exposure. For enzymes and receptors, pocket geometry, hydrophobic enclosure, and the presence of aromatic or hydrogen-bonding hotspots correlate with ligandability. Alpha-shape analyses and Delaunay triangulation compute pocket volumes, mouth widths, and curvature, while residue-level descriptors capture side-chain flexibility and physicochemical complementarity (Liang et al., 1998; Zhou & Yan, 2014).
+
+Physics-based components add mechanistic grounding. Docking provides approximate poses and scores that can be refined via short MD simulations to relax side chains, followed by MM-GBSA or related end-point free-energy estimators to rescore top poses (Li, Chen, & Weng, 2003; Ganesan, Coote, & Barakat, 2017; Xu et al., 2013). When experimental structures are unavailable, AlphaFold2 models with high pLDDT in binding regions are usable starting points, with caution about loop placement and induced fit (Jumper et al., 2021; Kryshtafovych & Fidelis, 2009).
+
+Proteochemometric (PCM) modeling complements structure by jointly encoding the ligand and a panel of related targets to learn family-level binding rules. This multi-task formulation improves extrapolation to understudied homologs and highlights selectivity determinants, which is critical for predicting off-target risks early (Qiu et al., 2017; David et al., 2020).
+
+Empirical priors inform risk. Historical success is enriched among targets with human genetic support, secreted or extracellular proteins for biologics, and tractable enzyme classes. Conversely, ubiquitously expressed essential genes and proteins central to housekeeping complexes carry toxicity risk. AI systems incorporate such priors as features or Bayesian priors to calibrate expectations and to steer portfolios toward tractable biology (Vamathevan et al., 2019; Chen et al., 2018).
+
+Validation closes the loop. Biochemical assays confirm potency and mechanism. Biophysical assays—thermal shift, SPR, CETSA—confirm target engagement in relevant matrices. Cellular assays test pathway reversal and on-target engagement. Genomic perturbations, including CRISPR knockouts or allelic series, test causality and direction of effect. Iterating predictions with experimental feedback turns druggability assessment from a static filter into a learning system (Vamathevan et al., 2019; David et al., 2020).
+
+Quality and Reproducibility Considerations. Across subsections, the most common failure modes are data leakage, analogue bias, and non-representative splits. Adopt scaffold or temporal splits, document all preprocessing, and version datasets. Prefer external validation on independent cohorts or assays when feasible. Report hyperparameters, uncertainty estimates, and confidence intervals. Maintain traceable evidence for every promoted target so decisions remain auditable to clinicians and regulators (Yu, Beam, & Kohane, 2018; Vamathevan et al., 2019; Pandey et al., 2022).
+
+## References
+
+Alipanahi, B., Delong, A., Weirauch, M. T., & Frey, B. J. (2015). Predicting the sequence specificities of DNA- and RNA-binding proteins by deep learning. *Nature Biotechnology, 33*(8), 831–838.
+
+Angermueller, C., Pärnamaa, T., Parts, L., & Stegle, O. (2016). Deep learning for computational biology. *Molecular Systems Biology, 12*(7), 878.
+
+Atz, K., Grisoni, F., & Schneider, G. (2021). Geometric deep learning on molecular representations. *Nature Machine Intelligence, 3*(12), 1023–1032.
+
+Chen, H., Engkvist, O., Wang, Y., Olivecrona, M., & Blaschke, T. (2018). The rise of deep learning in drug discovery. *Drug Discovery Today, 23*(6), 1241–1250.
+
+Costa, P. R., Acencio, M. L., & Lemke, N. (2010). A machine learning approach for genome-wide prediction of morbid and druggable human genes based on systems-level data. *BMC Genomics, 11*, 1–15.
+
+David, L., Thakkar, A., Mercado, R., & Engkvist, O. (2020). Molecular representations in AI-driven drug discovery: A review and practical guide. *Journal of Cheminformatics, 12*(1), 1–22.
+
+Defferrard, M., Bresson, X., & Vandergheynst, P. (2016). Convolutional neural networks on graphs with fast localized spectral filtering. In *Advances in Neural Information Processing Systems*.
+
+Ganesan, A., Coote, M. L., & Barakat, K. (2017). Molecular dynamics-driven drug discovery: Leaping forward with confidence. *Drug Discovery Today, 22*(2), 249–269.
+
+Gaudelet, T., Day, B., Jamasb, A. R., Soman, J., Regep, C., Liu, G., ... & Tang, J. (2021). Utilizing graph machine learning within drug discovery and development. *Briefings in Bioinformatics, 22*(6), bbab159.
+
+Gönen, M. (2012). Predicting drug–target interactions from chemical and genomic kernels using Bayesian matrix factorization. *Bioinformatics, 28*(18), 2304–2310.
+
+Jiang, D., Wu, Z., Hsieh, C.-Y., Chen, G., Liao, B., Wang, Z., ... & Hou, T. (2021). Could graph neural networks learn better molecular representation for drug discovery? *Journal of Cheminformatics, 13*(1), 1–23.
+
+Jumper, J., Evans, R., Pritzel, A., ... & Hassabis, D. (2021). Highly accurate protein structure prediction with AlphaFold. *Nature, 596*, 583–589.
+
+Karimi, M., Wu, D., Wang, Z., & Shen, Y. (2019). DeepAffinity: Interpretable deep learning of compound–protein affinity. *Bioinformatics, 35*(18), 3329–3338.
+
+Kryshtafovych, A., & Fidelis, K. (2009). Protein structure prediction and model quality assessment. *Drug Discovery Today, 14*(7–8), 386–393.
+
+Li, L., Chen, R., & Weng, Z. (2003). RDOCK: Refinement of rigid-body protein docking predictions. *Proteins, 53*(3), 693–707.
+
+Li, G., Muller, M., Thabet, A., & Ghanem, B. (2019). DeepGCNs: Can GCNs go as deep as CNNs? In *Proceedings of the IEEE/CVF International Conference on Computer Vision* (pp. 9267–9276).
+
+Liang, J., Edelsbrunner, H., Fu, P., Sudhakar, P. V., & Subramaniam, S. (1998). Analytical shape computation of macromolecules: I. *Proteins, 33*(1), 1–17.
+
+Ma, J., Sheridan, R. P., Liaw, A., ... & Dahl, G. E. (2015). Deep neural nets as a method for QSAR. *Journal of Chemical Information and Modeling, 55*(2), 263–274.
+
+Pandey, M., Fernandez, M., Gentile, F., Isayev, O., Tropsha, A., Stern, A. C., & Cherkasov, A. (2022). The transformational role of GPU computing and deep learning in drug discovery. *Nature Machine Intelligence, 4*(3), 211–221.
+
+Qiu, T., Qiu, J., Feng, J., ... & Zheng, W. (2017). Recent progress in proteochemometric modelling. *Briefings in Bioinformatics, 18*(1), 125–136.
+
+Scarselli, F., Gori, M., Tsoi, A. C., Hagenbuchner, M., & Monfardini, G. (2008). The graph neural network model. *IEEE Transactions on Neural Networks, 20*(1), 61–80.
+
+Stokes, J. M., Yang, K., Swanson, K., ... & Collins, J. J. (2020). A deep learning approach to antibiotic discovery. *Cell, 180*(4), 688–702.
+
+Vamathevan, J., Clark, D., Czodrowski, P., Dunham, I., Ferran, E., Lee, G., ... & Bender, A. (2019). Applications of machine learning in drug discovery and development. *Nature Reviews Drug Discovery, 18*(6), 463–477.
+
+Veličković, P., Cucurull, G., Casanova, A., Romero, A., Liò, P., & Bengio, Y. (2018). Graph attention networks. *arXiv:1710.10903*.
+
+Wallach, I., Dzamba, M., & Heifets, A. (2015). AtomNet: A deep CNN for structure-based drug discovery. *arXiv:1510.02855*.
+
+Wang, Y., Ribeiro, J. M. L., & Tiwary, P. (2020). Machine learning approaches for analyzing and enhancing MD. *Current Opinion in Structural Biology, 61*, 139–145.
+
+Wang, Y., Wang, J., Cao, Z., & Barati Farimani, A. (2022). Molecular contrastive learning via GNNs. *Nature Machine Intelligence, 4*, 279–287.
+
+Wu, Z., Ramsundar, B., Feinberg, E. N., ... & Pande, V. (2018). MoleculeNet: A benchmark for molecular ML. *Chemical Science, 9*(2), 513–530.
+
+Xu, L., Sun, H., Li, Y., Wang, J., & Hou, T. (2013). Assessing MM/PBSA and MM/GBSA. *Journal of Physical Chemistry B, 117*(28), 8408–8421.
+
+Yamanishi, Y., Kotera, M., Kanehisa, M., & Goto, S. (2010). DTI prediction from chemical, genomic and pharmacological data. *Bioinformatics, 26*(18), 246–254.
+
+Yu, K.-H., Beam, A. L., & Kohane, I. S. (2018). Artificial intelligence in healthcare. *Nature Biomedical Engineering, 2*(10), 719–731.
+
+Zhou, W., & Yan, H. (2014). Alpha shape and Delaunay triangulation in protein interactions. *Briefings in Bioinformatics, 15*(1), 54–64.
