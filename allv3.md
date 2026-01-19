@@ -4,27 +4,27 @@ University of Al-Maarif
 
 College of Pharmacy
 
----
+
 
 # Artificial Intelligence in Drug Discovery: From Target Identification to Clinical Translation
 
----
+
 
 A project submitted to the College of Pharmacy, University of Al-Maarif, in Partial Fulfillment of the Requirements for the Degree of Bachelor of Computer Science.
 
----
+
 
 **By**
 
 [Student Name(s)]
 
----
+
 
 **Supervisor**
 
 [Supervisor Name]
 
----
+
 
 **2026**
 
@@ -114,9 +114,6 @@ References
 
 # 1. Fundamentals of Drug Discovery & Artificial Intelligence (AI) Introduction
 
-## Abbreviations
-
-Artificial Intelligence (AI); Machine Learning (ML); Deep Learning (DL); quantitative structure–activity relationship (QSAR); absorption–distribution–metabolism–excretion–toxicity (ADMET); electronic health records (EHRs); Graph Neural Networks (GNNs); Variational Autoencoder (VAE); Generative Adversarial Network (GAN); Reinforcement Learning (RL); pharmacokinetics/pharmacodynamics (PK/PD); high-throughput screening (HTS); investigational new drug (IND).
 
 ## 1.1. The Traditional Drug Discovery Pipeline
 
