@@ -20,7 +20,7 @@
 3. L133: Quick Vina-W blind docking → (Maia et al., 2020)
 4. L148: Traditional binding pocket identification → (Liang et al., 1998; Sliwoski et al., 2014)
 5. L168: EquiBind, TANKBind deep learning docking → (Atz et al., 2021)
-6. L176: DiffDock accuracy improvement → (Maia et al., 2020)
+6. L176: DiffDock accuracy improvement → (Corso et al., 2022)
 7. L194: Scoring functions, GNINA rescoring → (Sliwoski et al., 2014)
 
 ### Section 3.2.1 – De Novo Drug Design

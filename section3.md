@@ -173,7 +173,7 @@ docking as a generative task. DiffDock used diffusion generative model
 to generate conformations and applied a confidence model to estimate the
 poses. This method enjoys a significant improvement in the docking
 accuracy, representing a powerful intermediate approach between
-traditional sampling and one-shot prediction (Maia et al., 2020).
+traditional sampling and one-shot prediction (Corso et al., 2022).
 
 The score function, which is commonly used to estimate the confidence of
 ligand binding poses, is another important factor affecting the accuracy
